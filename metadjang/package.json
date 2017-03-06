@@ -1,0 +1,37 @@
+{
+  "name": "metadjang",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "@sketchpixy/rubix": "^2.9.17",
+    "bless": "^3.0.3",
+    "css-loader": "^0.26.2",
+    "node-sass": "^4.5.0",
+    "resolve-url-loader": "^2.0.1",
+    "style-loader": "^0.13.2"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "jquery": "^3.1.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-websocket": "^1.1.6",
+    "webpack": "^2.2.1",
+    "webpack-bundle-tracker": "^0.2.0",
+    "react-scripts": "0.9.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "sass": "node-sass --include-path ./node_modules --include-path ./static ./sass/main.scss ./assets/js/main.css && blessc -f ./assets/js/main.css"
+  },
+  "author": "",
+  "license": "ISC"
+}

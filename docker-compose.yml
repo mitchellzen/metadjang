@@ -1,0 +1,69 @@
+version: '2'
+services:
+  solr:
+    image: library/solr
+    ports: 
+      - "8983:8983"
+    hostname: solr
+    volumes:
+      - data:/opt/solr/server/solr/mycores
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - metadjang
+  redis:
+    image: library/redis
+    ports:
+      - "6379:6379"
+    hostname: redis
+  rabbit:
+    hostname: rabbit
+    image: rabbitmq:3.6.0
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5672:5672"  
+      - "15672:15672" 
+  db:
+    hostname: db
+    image: library/postgres
+    volumes:
+      - ./db:/pgdata
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+  web:
+    hostname: web
+    build:
+      context: ./metadjang
+      dockerfile: Dockerfile
+    command: ./run_web.sh
+    volumes:
+      - ./metadjang:/webapp  
+    ports:
+      - "8000:8000"
+    links:
+      - db
+      - redis
+      - rabbit
+    depends_on:
+      - db
+  worker:
+    build: 
+      context: ./metadjang
+      dockerfile: Workerfile
+    command: ./run_celery.sh
+    volumes:
+      - ./metadjang:/webapp
+    links:
+      - db
+      - rabbit
+      - redis
+    depends_on:
+      - rabbit
+volumes:
+  data:
